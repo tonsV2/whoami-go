@@ -1,6 +1,7 @@
 version: "3.6"
 services:
   app:
+    image: tons/whoami-go
     build: .
     ports:
       - 8080:8080
