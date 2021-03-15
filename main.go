@@ -4,15 +4,21 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 )
 
-func homePage(w http.ResponseWriter, r *http.Request) {
-	_, _ = fmt.Fprintf(w, "Welcome to the HomePage!")
-	fmt.Println("Endpoint Hit: homePage")
+func whoAmI(w http.ResponseWriter, r *http.Request) {
+	hostname, err := os.Hostname()
+	if err != nil {
+		panic(err)
+	}
+
+	_, _ = fmt.Fprintf(w, hostname)
+	log.Print("Endpoint Hit: /")
 }
 
 func handleRequests() {
-	http.HandleFunc("/", homePage)
+	http.HandleFunc("/", whoAmI)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
