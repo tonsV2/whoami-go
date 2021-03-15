@@ -19,7 +19,14 @@ func whoAmI(w http.ResponseWriter, r *http.Request) {
 
 func handleRequests() {
 	http.HandleFunc("/", whoAmI)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+
+	port := "8080"
+	if value, ok := os.LookupEnv("PORT"); ok {
+		port = value
+	}
+
+	log.Printf("Server listening on port: %s", port)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
 }
 
 func main() {
