@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func whoAmI(w http.ResponseWriter, r *http.Request) {
+func whoAmI(w http.ResponseWriter, _ *http.Request) {
 	hostname, err := os.Hostname()
 	if err != nil {
 		panic(err)
