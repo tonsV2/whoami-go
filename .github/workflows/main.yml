@@ -102,7 +102,7 @@ jobs:
           IMAGE_TAG=latest helmfile -e dev sync
 
       - name: Deploy to Production
-        if: github.ref == "refs/tags/v${{ env.VERSION }}"
+        if: startsWith(github.ref, 'refs/tags/v')
         run: |
           IMAGE_TAG=${{ env.VERSION }} helmfile -e prod sync
 
