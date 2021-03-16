@@ -30,3 +30,6 @@ releases:
             - host: {{ .Values.host }}
               paths:
                 - path: /
+
+helmDefaults:
+  recreatePods: true

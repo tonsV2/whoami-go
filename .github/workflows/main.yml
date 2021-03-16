@@ -109,4 +109,4 @@ jobs:
       - name: Deploy Feature Branch
         if: startsWith(github.ref, 'refs/heads/feature/')
         run: |
-          IMAGE_TAG="${{ env.VERSION }}" helmfile -e feature sync
+          IMAGE_TAG="${{ env.VERSION }}" helmfile -e feature sync --set image.pullPolicy=Always
