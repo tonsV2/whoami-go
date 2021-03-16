@@ -66,7 +66,8 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-# TODO: If on release branch and no tag is present an image tagged with release will be push... Which won't be used for anything
+      # TODO: If on release branch and no tag is present an image tagged with release will be push... Which won't be used for anything
+      # Perhaps only push if $VERSION != 'release' ?
       - name: Push image
         run: |
           VERSION="${{ env.VERSION }}"
