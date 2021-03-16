@@ -1,7 +1,16 @@
 version: "3.6"
 services:
-  app:
+  prod:
     image: tons/whoami-go
     build: .
     ports:
       - 8080:8080
+
+  test:
+    build:
+      context: .
+      target: build
+    volumes:
+      - .:/src
+    working_dir: /src
+    command: /bin/sh -c 'go test -v ./...'
