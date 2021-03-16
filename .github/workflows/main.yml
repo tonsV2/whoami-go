@@ -64,6 +64,7 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+# TODO: If on release branch and no tag is present an image tagged with release will be push... Which won't be used for anything
       - name: Push image
         run: |
           VERSION="${{ env.VERSION }}"
@@ -93,20 +94,16 @@ jobs:
           echo "${{ secrets.KUBECONFIG }}" > /home/runner/.kube/config
 
       - name: Deploy to Development
+        if: github.ref == 'refs/heads/master'
         run: |
-          export IMAGE_TAG="${{ env.VERSION }}"
-          [ "$IMAGE_TAG" == "latest" ] && helmfile -e development sync
-          ls # HACK: Unless this line is present the pipeline fails with exitcode 1
+          IMAGE_TAG=latest helmfile -e development sync
 
       - name: Deploy to Production
+        if: github.ref == 'refs/heads/release' && env.VERSION != 'release'
         run: |
-          export IMAGE_TAG="${{ env.VERSION }}"
-          [ "$IMAGE_TAG" != "latest" ] && helmfile -e production sync
-          ls # HACK: Unless this line is present the pipeline fails with exitcode 1
+          IMAGE_TAG="${{ env.VERSION }}" helmfile -e production sync
 
       - name: Deploy Feature Branch
         if: startsWith(github.ref, 'refs/heads/feature/')
         run: |
-          export IMAGE_TAG="${{ env.VERSION }}"
-          [ "$IMAGE_TAG" == "latest" ] && helmfile -e feature sync
-          ls # HACK: Unless this line is present the pipeline fails with exitcode 1
+          IMAGE_TAG="${{ env.VERSION }}" helmfile -e feature sync
