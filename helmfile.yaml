@@ -1,0 +1,29 @@
+environments:
+  development:
+    values:
+      - kubeContext: nuc
+      - host: whoami-go.dev.fitfit.dk
+
+  production:
+    values:
+      - kubeContext: nuc
+      - host: whoami-go.fitfit.dk
+
+  feature:
+    values:
+      - kubeContext: nuc
+      - host: whoami-go-{{ requiredEnv "IMAGE_TAG" }}.fitfit.dk
+
+releases:
+  - name: whoami-go-{{ requiredEnv "IMAGE_TAG" }}
+    namespace: whoami-go-{{ .Environment.Name }}
+    chart: helm/
+    kubeContext: "{{ .Values.kubeContext }}"
+    values:
+      - image:
+          tag: '{{ requiredEnv "IMAGE_TAG" }}'
+      - ingress:
+          hosts:
+            - host: {{ .Values.host }}
+              paths:
+                - path: /
