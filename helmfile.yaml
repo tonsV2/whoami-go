@@ -2,20 +2,23 @@ environments:
   development:
     values:
       - kubeContext: nuc
+      - name: whoami-go
       - host: whoami-go.dev.fitfit.dk
 
   production:
     values:
       - kubeContext: nuc
+      - name: whoami-go
       - host: whoami-go.fitfit.dk
 
   feature:
     values:
       - kubeContext: nuc
+      - name: whoami-go-{{ .Environment.Name }}-{{ requiredEnv "IMAGE_TAG" }}
       - host: whoami-go-{{ requiredEnv "IMAGE_TAG" }}.fitfit.dk
 
 releases:
-  - name: whoami-go-{{ requiredEnv "IMAGE_TAG" | replace "." "-" }}
+  - name: "{{ .Values.name }}"
     namespace: whoami-go-{{ .Environment.Name }}
     chart: helm/
     kubeContext: "{{ .Values.kubeContext }}"
