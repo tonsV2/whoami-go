@@ -12,7 +12,7 @@ environments:
   feature:
     values:
       - kubeContext: nuc
-      - host: whoami-go-{{ requiredEnv "IMAGE_TAG" | replace "." "-" }}.fitfit.dk
+      - host: whoami-go-{{ requiredEnv "IMAGE_TAG" }}.fitfit.dk
 
 releases:
   - name: whoami-go-{{ requiredEnv "IMAGE_TAG" | replace "." "-" }}
