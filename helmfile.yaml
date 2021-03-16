@@ -15,7 +15,7 @@ environments:
       - host: whoami-go-{{ requiredEnv "IMAGE_TAG" }}.fitfit.dk
 
 releases:
-  - name: whoami-go-{{ requiredEnv "IMAGE_TAG" }}
+  - name: whoami-go-{{ requiredEnv "IMAGE_TAG" | replace "." "-" }}
     namespace: whoami-go-{{ .Environment.Name }}
     chart: helm/
     kubeContext: "{{ .Values.kubeContext }}"
