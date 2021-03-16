@@ -99,12 +99,12 @@ jobs:
       - name: Deploy to Development
         if: github.ref == 'refs/heads/master'
         run: |
-          IMAGE_TAG=latest helmfile -e development sync
+          IMAGE_TAG=latest helmfile -e dev sync
 
       - name: Deploy to Production
-        if: github.ref == "refs/tags/v${{ env.VERSION }}" && "${GITHUB_REF##*/}" == "release"
+        if: github.ref == "refs/tags/v${{ env.VERSION }}"
         run: |
-          IMAGE_TAG="${{ env.VERSION }}" helmfile -e production sync
+          IMAGE_TAG=${{ env.VERSION }} helmfile -e prod sync
 
       - name: Deploy Feature Branch
         if: startsWith(github.ref, 'refs/heads/feature/')

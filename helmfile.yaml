@@ -1,11 +1,11 @@
 environments:
-  development:
+  dev:
     values:
       - kubeContext: nuc
       - name: whoami-go
       - host: whoami-go.dev.fitfit.dk
 
-  production:
+  prod:
     values:
       - kubeContext: nuc
       - name: whoami-go
