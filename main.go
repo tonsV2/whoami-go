@@ -1,43 +1,16 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
+	. "github.com/tonsV2/whoami-go/internal"
 	"log"
 	"net/http"
 	"os"
 )
 
-func whoAmI(w http.ResponseWriter, _ *http.Request) {
-	log.Print("Endpoint Hit: /")
-
-	hostname, err := os.Hostname()
-	if err != nil {
-		panic(err)
-	}
-
-	_, _ = fmt.Fprintf(w, hostname)
-}
-
-func health(writer http.ResponseWriter, _ *http.Request) {
-	log.Print("Endpoint Hit: /health")
-
-	writer.Header().Set("Content-Type", "application/json")
-
-	type Health struct {
-		Status string
-	}
-
-	health := Health{
-		Status: "UP",
-	}
-
-	_ = json.NewEncoder(writer).Encode(health)
-}
-
 func handleRequests() {
-	http.HandleFunc("/", whoAmI)
-	http.HandleFunc("/health", health)
+	http.HandleFunc("/", WhoAmI)
+	http.HandleFunc("/health", Health)
 
 	port := "8080"
 	if value, ok := os.LookupEnv("PORT"); ok {
