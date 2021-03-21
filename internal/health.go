@@ -7,7 +7,7 @@ import (
 )
 
 func Health(writer http.ResponseWriter, _ *http.Request) {
-	log.Print("Endpoint Hit: /health")
+	log.Print("Endpoint Hit: /health - on a feature branch")
 
 	writer.Header().Set("Content-Type", "application/json")
 
