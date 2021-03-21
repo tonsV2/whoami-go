@@ -74,6 +74,23 @@ jobs:
           docker tag $IMAGE_NAME $IMAGE_NAME:$VERSION
           docker push $IMAGE_NAME:$VERSION
 
+      - name: Setup yq
+        run: |
+          sudo snap install --channel=v4 yq
+
+      - name: Update chart image tag
+        run: |
+          yq -i e ".image.tag = \"${{ env.VERSION }}\"" helm/values.yaml
+
+      - name: Update chart version
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          yq -i e ".version = \"${{ env.VERSION }}\"" helm/Chart.yaml
+
+      - name: Update chart app version
+        run: |
+          yq -i e ".appVersion = \"${{ env.VERSION }}\"" helm/Chart.yaml
+
       - name: Lint Helm
         uses: WyriHaximus/github-action-helm3@v2
         with:
