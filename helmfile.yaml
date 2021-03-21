@@ -4,18 +4,21 @@ environments:
       - kubeContext: nuc
       - name: whoami-go
       - host: whoami-go.dev.fitfit.dk
+      - certIssuer: letsencrypt-staging
 
   prod:
     values:
       - kubeContext: nuc
       - name: whoami-go
       - host: whoami-go.fitfit.dk
+      - certIssuer: letsencrypt-prod
 
   feature:
     values:
       - kubeContext: nuc
       - name: whoami-go-{{ .Environment.Name }}-{{ requiredEnv "IMAGE_TAG" }}
       - host: whoami-go-{{ requiredEnv "IMAGE_TAG" }}.fitfit.dk
+      - certIssuer: letsencrypt-staging
 
 releases:
   - name: "{{ .Values.name }}"
@@ -26,10 +29,9 @@ releases:
       - image:
           tag: '{{ requiredEnv "IMAGE_TAG" }}'
       - ingress:
-          hosts:
-            - host: {{ .Values.host }}
-              paths:
-                - path: /
+          enabled: true
+          hostname: {{ .Values.host }}
+          certIssuer: {{ .Values.certIssuer }}
 
 helmDefaults:
   recreatePods: true
