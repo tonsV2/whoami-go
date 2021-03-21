@@ -16,8 +16,8 @@ environments:
   feature:
     values:
       - kubeContext: nuc
-      - name: whoami-go-{{ .Environment.Name }}-{{ requiredEnv "IMAGE_TAG" }}
-      - host: whoami-go-{{ requiredEnv "IMAGE_TAG" }}.fitfit.dk
+      - name: whoami-go-{{ .Environment.Name }}-{{ requiredEnv "FEATURE_TAG" }}
+      - host: whoami-go-{{ requiredEnv "FEATURE_TAG" }}.fitfit.dk
       - certIssuer: letsencrypt-staging
 
 releases:
@@ -26,8 +26,6 @@ releases:
     chart: helm/
     kubeContext: "{{ .Values.kubeContext }}"
     values:
-      - image:
-          tag: '{{ requiredEnv "IMAGE_TAG" }}'
       - ingress:
           enabled: true
           hostname: {{ .Values.host }}

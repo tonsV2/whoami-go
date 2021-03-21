@@ -116,14 +116,14 @@ jobs:
       - name: Deploy to Development
         if: github.ref == 'refs/heads/master'
         run: |
-          IMAGE_TAG=latest helmfile -e dev sync --set image.pullPolicy=Always
+          FEATURE_TAG="-" helmfile -e dev sync --set image.pullPolicy=Always
 
       - name: Deploy to Production
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          IMAGE_TAG=${{ env.VERSION }} helmfile -e prod sync
+          FEATURE_TAG="-" helmfile -e prod sync
 
       - name: Deploy Feature Branch
         if: startsWith(github.ref, 'refs/heads/feature/')
         run: |
-          IMAGE_TAG="${{ env.VERSION }}" helmfile -e feature sync --set image.pullPolicy=Always
+          FEATURE_TAG="${{ env.VERSION }}" helmfile -e feature sync --set image.pullPolicy=Always
