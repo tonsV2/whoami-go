@@ -13,4 +13,4 @@ services:
     volumes:
       - .:/src
     working_dir: /src
-    command: /bin/sh -c 'go test -v ./...'
+    command: /bin/sh -c 'go test -v ./test'
