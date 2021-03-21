@@ -118,6 +118,13 @@ jobs:
         run: |
           FEATURE_TAG="-" helmfile -e dev sync --set image.pullPolicy=Always
 
+      - name: Smoke test Development
+        if: github.ref == 'refs/heads/master'
+        run: |
+          URL=$(FEATURE_TAG="-" helmfile -e dev template | yq e '.spec.rules[0].host' - | sed s/null// | sed s/---// | tr -d '\n')
+          sleep 10
+          curl --fail --insecure --location "$URL/health" | jq -e '.Status | test("UP")'
+
       - name: Deploy to Production
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
