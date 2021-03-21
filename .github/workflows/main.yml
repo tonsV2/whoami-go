@@ -118,7 +118,7 @@ jobs:
         run: |
           FEATURE_TAG="-" helmfile -e dev sync --set image.pullPolicy=Always
 
-      - name: Smoke test Development
+      - name: Smoke test Development deployment
         if: github.ref == 'refs/heads/master'
         run: |
           URL=$(FEATURE_TAG="-" helmfile -e dev template | yq e '.spec.rules[0].host' - | sed s/null// | sed s/---// | tr -d '\n')
@@ -130,7 +130,21 @@ jobs:
         run: |
           FEATURE_TAG="-" helmfile -e prod sync
 
+      - name: Smoke test Production deployment
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          URL=$(FEATURE_TAG="-" helmfile -e prod template | yq e '.spec.rules[0].host' - | sed s/null// | sed s/---// | tr -d '\n')
+          sleep 10
+          curl --fail --insecure --location "$URL/health" | jq -e '.Status | test("UP")'
+
       - name: Deploy Feature Branch
         if: startsWith(github.ref, 'refs/heads/feature/')
         run: |
           FEATURE_TAG="${{ env.VERSION }}" helmfile -e feature sync --set image.pullPolicy=Always
+
+      - name: Smoke test Feature deployment
+        if: startsWith(github.ref, 'refs/heads/feature/')
+        run: |
+          URL=$(FEATURE_TAG="${{ env.VERSION }}" helmfile -e feature template | yq e '.spec.rules[0].host' - | sed s/null// | sed s/---// | tr -d '\n')
+          sleep 10
+          curl --fail --insecure --location "$URL/health" | jq -e '.Status | test("UP")'
