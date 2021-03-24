@@ -15,10 +15,6 @@ on:
   # Run tests for any PRs.
   pull_request:
 
-env:
-  # This should match what's in the docker-compose production service
-  IMAGE_NAME: tons/whoami-go
-
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -66,17 +62,18 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Setup yq
+        run: |
+          sudo snap install --channel=v4 yq
+
       # TODO: If on release branch and no tag is present an image tagged with release will be push... Which won't be used for anything
       # Perhaps only push if $VERSION != 'release' ?
       - name: Push image
         run: |
+          IMAGE_NAME=$(yq e '.services.prod.image' docker-compose.yml)
           VERSION="${{ env.VERSION }}"
           docker tag $IMAGE_NAME $IMAGE_NAME:$VERSION
           docker push $IMAGE_NAME:$VERSION
-
-      - name: Setup yq
-        run: |
-          sudo snap install --channel=v4 yq
 
       - name: Update chart image tag
         run: |
