@@ -129,4 +129,4 @@ jobs:
         run: |
           URL=$(FEATURE_TAG="${{ env.VERSION }}" helmfile -e ${{ env.ENVIRONMENT }} template | yq e '.spec.rules[0].host' - | sed s/null// | sed s/---// | tr -d '\n')
           sleep 10
-          curl --fail --insecure --location "$URL/health" | jq -e '.Status | test("UP")'
+          curl --fail --insecure --location --max-time 10 "$URL/health" | jq -e '.Status | test("UP")'
