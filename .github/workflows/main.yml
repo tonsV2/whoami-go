@@ -111,34 +111,22 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: |
           FEATURE_TAG="-" helmfile -e dev sync --set image.pullPolicy=Always
-
-      - name: Smoke test Development deployment
-        if: github.ref == 'refs/heads/master'
-        run: |
-          URL=$(FEATURE_TAG="-" helmfile -e dev template | yq e '.spec.rules[0].host' - | sed s/null// | sed s/---// | tr -d '\n')
-          sleep 10
-          curl --fail --insecure --location "$URL/health" | jq -e '.Status | test("UP")'
+          echo "ENVIRONMENT=dev" >> $GITHUB_ENV
 
       - name: Deploy to Production
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
           FEATURE_TAG="-" helmfile -e prod sync
-
-      - name: Smoke test Production deployment
-        if: startsWith(github.ref, 'refs/tags/v')
-        run: |
-          URL=$(FEATURE_TAG="-" helmfile -e prod template | yq e '.spec.rules[0].host' - | sed s/null// | sed s/---// | tr -d '\n')
-          sleep 10
-          curl --fail --insecure --location "$URL/health" | jq -e '.Status | test("UP")'
+          echo "ENVIRONMENT=prod" >> $GITHUB_ENV
 
       - name: Deploy Feature Branch
         if: startsWith(github.ref, 'refs/heads/feature/')
         run: |
           FEATURE_TAG="${{ env.VERSION }}" helmfile -e feature sync --set image.pullPolicy=Always
+          echo "ENVIRONMENT=feature" >> $GITHUB_ENV
 
-      - name: Smoke test Feature deployment
-        if: startsWith(github.ref, 'refs/heads/feature/')
+      - name: Smoke test deployment
         run: |
-          URL=$(FEATURE_TAG="${{ env.VERSION }}" helmfile -e feature template | yq e '.spec.rules[0].host' - | sed s/null// | sed s/---// | tr -d '\n')
+          URL=$(FEATURE_TAG="${{ env.VERSION }}" helmfile -e ${{ env.ENVIRONMENT }} template | yq e '.spec.rules[0].host' - | sed s/null// | sed s/---// | tr -d '\n')
           sleep 10
           curl --fail --insecure --location "$URL/health" | jq -e '.Status | test("UP")'
