@@ -7,4 +7,5 @@ RUN go build -o /app/whoami-go .
 FROM alpine:3.9
 WORKDIR /app
 COPY --from=build /app/whoami-go .
+USER guest
 CMD ["/app/whoami-go"]
