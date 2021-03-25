@@ -59,6 +59,12 @@ jobs:
           USER=$(docker-compose exec -T prod whoami)
           [ "$USER" != "root" ]
 
+      - name: Confirm process is running as pid 1
+        run: |
+          # TODO: Don't hardcode application name
+          PID=$(docker-compose exec -T prod pgrep whoami-go)
+          [ "$PID" == "1" ]
+
       - name: End smoke test
         run: |
           docker-compose down
