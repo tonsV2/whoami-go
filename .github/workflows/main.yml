@@ -52,6 +52,9 @@ jobs:
         run: |
           docker-compose up -d prod
           sleep 5
+
+      - name: Confirm /health returns 200
+        run: |
           curl --fail localhost:8080/health
 
       - name: Confirm process isn't running as root
