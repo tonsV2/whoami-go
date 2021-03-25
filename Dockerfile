@@ -4,6 +4,7 @@ WORKDIR /src
 COPY . .
 RUN go build -o /app/whoami-go .
 
+RUN apk --no-cache -U upgrade
 FROM alpine:3.9
 WORKDIR /app
 COPY --from=build /app/whoami-go .
