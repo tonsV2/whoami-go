@@ -147,3 +147,9 @@ jobs:
           URL=$(FEATURE_TAG="${{ env.VERSION }}" helmfile -e ${{ env.ENVIRONMENT }} template | yq e '.spec.rules[0].host' - | sed s/null// | sed s/---// | tr -d '\n')
           sleep 10
           curl --fail --insecure --location --max-time 10 "$URL/health" | jq -e '.Status | test("UP")'
+
+#      - name: Helmstack deploy
+#        run: |
+#          IMAGE_NAME=$(yq e '.services.prod.image' docker-compose.yml | cut -d '/' -f2-)
+#          CAMEL_CASE_IMAGE_NAME=$(echo $IMAGE_NAME | sed -r 's/\-(.*)/\U\1\E/g')
+#          yq -i e ".environments.dev.values[].$CAMEL_CASE_IMAGE_NAME | select (. != null) | .version = \"${{ env.VERSION }}\"" helmfile.yaml
