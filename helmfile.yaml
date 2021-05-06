@@ -3,7 +3,7 @@ environments:
     values:
       - kubeContext: nuc
       - name: whoami-go
-      - host: whoami-go.dev.fitfit.dk
+      - hostname: whoami-go.dev.fitfit.dk
       - certIssuer: letsencrypt-staging
       - replicaCount: 1
 
@@ -11,7 +11,7 @@ environments:
     values:
       - kubeContext: nuc
       - name: whoami-go
-      - host: whoami-go.fitfit.dk
+      - hostname: whoami-go.fitfit.dk
       - certIssuer: letsencrypt-prod
       - replicaCount: 2
 
@@ -19,7 +19,7 @@ environments:
     values:
       - kubeContext: nuc
       - name: whoami-go-{{ .Environment.Name }}-{{ requiredEnv "FEATURE_TAG" }}
-      - host: whoami-go-{{ requiredEnv "FEATURE_TAG" }}.fitfit.dk
+      - hostname: whoami-go-{{ requiredEnv "FEATURE_TAG" }}.fitfit.dk
       - certIssuer: letsencrypt-staging
       - replicaCount: 1
 
@@ -31,7 +31,7 @@ releases:
     values:
       - ingress:
           enabled: true
-          hostname: {{ .Values.host }}
+          hostname: {{ .Values.hostname }}
           certIssuer: {{ .Values.certIssuer }}
       - replicaCount: {{ .Values.replicaCount }}
 
