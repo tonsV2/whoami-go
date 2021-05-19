@@ -30,7 +30,7 @@ helm package --sign --key 'helm' --keyring ~/.gnupg/pubring.gpg helm/
 ## Upload to repository
 ```sh
 curl --user "$CHARTMUSEUM_AUTH_USER:$CHARTMUSEUM_AUTH_PASS" \
-                -F "chart=@whoami-go-0.2.0.tgz" \
-                -F "prov=@whoami-go-0.2.0.tgz.prov" \
-                https://helm-charts.fitfit.dk/api/charts
+    -F "chart=@whoami-go-0.3.0.tgz" \
+    -F "prov=@whoami-go-0.3.0.tgz.prov" \
+    https://helm-charts.fitfit.dk/api/charts
 ```
