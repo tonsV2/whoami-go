@@ -45,6 +45,7 @@ service:
 ingress:
   enabled: true
   hostname: whoami-go.127.0.0.1.nip.io
+  path: /
 #  certIssuer: letsencrypt-staging | letsencrypt-prod
 
 resources: {}
