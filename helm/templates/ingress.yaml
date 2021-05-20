@@ -16,7 +16,7 @@ metadata:
 spec:
   {{- if $tls }}
   tls:
-    - secretName: {{ $fullName }}-tls
+    - secretName: {{ .Values.ingress.hostname | replace "." "-" }}-tls
       hosts:
         - {{ .Values.ingress.hostname | quote }}
   {{- end }}
