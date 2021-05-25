@@ -14,6 +14,16 @@ go build -o whoami-go . && ./whoami-go
 docker-compose up prod
 ```
 
+# Develop
+```sh
+docker-compose up dev
+```
+
+# Test
+```sh
+docker-compose up test
+```
+
 # HTTP Request
 Perform a http request using HTTPie
 
