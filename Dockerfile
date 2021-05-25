@@ -1,6 +1,8 @@
 FROM golang:1.16-alpine AS build
 RUN apk add gcc musl-dev
 WORKDIR /src
+COPY go.mod ./
+RUN go mod download
 COPY . .
 RUN go build -o /app/whoami-go .
 
