@@ -9,6 +9,9 @@ metadata:
   labels:
     {{- include "whoami-go.labels" . | nindent 4 }}
   annotations:
+  {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   {{- if $tls }}
     cert-manager.io/cluster-issuer: {{ .Values.ingress.certIssuer | quote }}
     ingress.kubernetes.io/ssl-redirect: "true"
