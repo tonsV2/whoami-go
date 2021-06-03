@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func handleRequests() {
+func main() {
 	http.HandleFunc("/", WhoAmI)
 	http.HandleFunc("/health", Health)
 
@@ -19,8 +19,4 @@ func handleRequests() {
 
 	log.Printf("Server listening on port: %s", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
-}
-
-func main() {
-	handleRequests()
 }
