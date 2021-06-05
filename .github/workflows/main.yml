@@ -47,11 +47,15 @@ jobs:
       - name: Build image
         run: |
           docker-compose build prod
+        env:
+          IMAGE_TAG: ${{ env.VERSION }}
 
       - name: Smoke test Docker image
         run: |
           docker-compose up -d prod
           sleep 5
+        env:
+          IMAGE_TAG: ${{ env.VERSION }}
 
       - name: Confirm /health returns 200
         run: |
@@ -61,12 +65,16 @@ jobs:
         run: |
           USER=$(docker-compose exec -T prod whoami)
           [ "$USER" != "root" ]
+        env:
+          IMAGE_TAG: ${{ env.VERSION }}
 
       - name: Confirm process is running as pid 1
         run: |
           # TODO: Don't hardcode application name
           PID=$(docker-compose exec -T prod pgrep whoami-go)
           [ "$PID" == "1" ]
+        env:
+          IMAGE_TAG: ${{ env.VERSION }}
 
       - name: End smoke test
         run: |
@@ -78,16 +86,15 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Push image
+        run: |
+          docker-compose push prod
+        env:
+          IMAGE_TAG: ${{ env.VERSION }}
+
       - name: Setup yq
         run: |
           sudo snap install --channel=v4 yq
-
-      - name: Push image
-        run: |
-          IMAGE_NAME=$(yq e '.services.prod.image' docker-compose.yml)
-          VERSION="${{ env.VERSION }}"
-          docker tag $IMAGE_NAME $IMAGE_NAME:$VERSION
-          docker push $IMAGE_NAME:$VERSION
 
       - name: Update chart image tag
         run: |

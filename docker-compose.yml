@@ -1,7 +1,7 @@
 version: "3.6"
 services:
   prod:
-    image: tons/whoami-go
+    image: tons/whoami-go:${IMAGE_TAG:-latest}
     build: .
     ports:
       - 8080:8080
