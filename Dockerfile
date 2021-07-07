@@ -7,8 +7,8 @@ RUN go mod download
 COPY . .
 RUN go build -o /app/whoami-go .
 
-RUN apk --no-cache -U upgrade
 FROM alpine:3.9
+RUN apk --no-cache -U upgrade
 WORKDIR /app
 COPY --from=build /app/whoami-go .
 USER guest
