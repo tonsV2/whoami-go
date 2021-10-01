@@ -5,7 +5,7 @@ RUN go get github.com/cespare/reflex
 COPY go.mod ./
 RUN go mod download
 COPY . .
-RUN go build -o /app/whoami-go .
+RUN go build -o /app/whoami-go -ldflags "-s -w" .
 
 FROM alpine:3.14
 RUN apk --no-cache -U upgrade

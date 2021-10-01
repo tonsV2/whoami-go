@@ -3,7 +3,7 @@ tag ?= latest
 version ?= $(shell yq e '.version' helm/Chart.yaml)
 
 app:
-	go build -o whoami-go .
+	go build -o whoami-go -ldflags "-s -w" .
 
 image:
 	KO_DOCKER_REPO=tons ko publish --base-import-paths --tags=$(tag) .
