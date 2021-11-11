@@ -7,8 +7,8 @@ import (
 	"os"
 )
 
-func WhoAmI(w http.ResponseWriter, _ *http.Request) {
-	log.Print("Endpoint Hit: /")
+func WhoAmI(w http.ResponseWriter, r *http.Request) {
+	log.Print("Endpoint Hit: " + r.URL.String())
 
 	hostname, err := os.Hostname()
 	if err != nil {
