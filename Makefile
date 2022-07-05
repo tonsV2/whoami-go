@@ -9,7 +9,7 @@ image:
 	KO_DOCKER_REPO=tons ko publish --base-import-paths --tags=$(tag) .
 
 alpine-image:
-	docker-compose build prod && docker-compose push prod
+	IMAGE_TAG=$(tag) docker-compose build prod && IMAGE_TAG=$(tag) docker-compose push prod
 
 helm-package:
 	@helm package --sign --key helm --keyring ~/.gnupg/pubring.gpg helm/
