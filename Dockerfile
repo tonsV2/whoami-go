@@ -3,7 +3,7 @@ RUN apk add gcc musl-dev
 WORKDIR /src
 RUN go install github.com/cespare/reflex@latest
 COPY go.mod ./
-RUN go mod download
+RUN go mod download -x
 COPY . .
 RUN go build -o /app/whoami-go -ldflags "-s -w" .
 
