@@ -1,7 +1,7 @@
-FROM golang:1.16-alpine AS build
+FROM golang:1.18-alpine AS build
 RUN apk add gcc musl-dev
 WORKDIR /src
-RUN go get github.com/cespare/reflex
+RUN go install github.com/cespare/reflex@latest
 COPY go.mod ./
 RUN go mod download
 COPY . .
