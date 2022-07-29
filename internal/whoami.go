@@ -15,5 +15,5 @@ func WhoAmI(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	_, _ = fmt.Fprintf(w, hostname)
+	_, _ = fmt.Fprint(w, hostname)
 }
