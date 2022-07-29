@@ -12,7 +12,9 @@ func WhoAmI(w http.ResponseWriter, r *http.Request) {
 
 	hostname, err := os.Hostname()
 	if err != nil {
-		panic(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		_, _ = w.Write([]byte(err.Error()))
+		return
 	}
 
 	_, _ = fmt.Fprint(w, hostname)
