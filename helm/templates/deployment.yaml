@@ -19,6 +19,9 @@ spec:
       {{- end }}
       labels:
         {{- include "whoami-go.selectorLabels" . | nindent 8 }}
+      {{- with .Values.commonLabels }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
