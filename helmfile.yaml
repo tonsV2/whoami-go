@@ -1,7 +1,7 @@
 environments:
   dev:
     values:
-      - kubeContext: nuc
+      - kubeContext: default
       - name: whoami-go
       - hostname: whoami-go.dev.fitfit.dk
       - certIssuer: letsencrypt-staging
@@ -9,7 +9,7 @@ environments:
 
   prod:
     values:
-      - kubeContext: nuc
+      - kubeContext: default
       - name: whoami-go
       - hostname: whoami-go.fitfit.dk
       - certIssuer: letsencrypt-prod
@@ -17,7 +17,7 @@ environments:
 
   feature:
     values:
-      - kubeContext: nuc
+      - kubeContext: default
       - name: whoami-go-{{ .Environment.Name }}-{{ requiredEnv "FEATURE_TAG" }}
       - hostname: whoami-go-{{ requiredEnv "FEATURE_TAG" }}.fitfit.dk
       - certIssuer: letsencrypt-staging
