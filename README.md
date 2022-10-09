@@ -34,13 +34,10 @@ http :8080
 # Helm
 ## Package
 ```sh
-helm package --sign --key 'helm' --keyring ~/.gnupg/pubring.gpg helm/
+make helm-package
 ```
 
 ## Upload to repository
 ```sh
-curl --user "$CHARTMUSEUM_AUTH_USER:$CHARTMUSEUM_AUTH_PASS" \
-    -F "chart=@whoami-go-0.4.0.tgz" \
-    -F "prov=@whoami-go-0.4.0.tgz.prov" \
-    https://helm-charts.fitfit.dk/api/charts
+make publish-helm
 ```
