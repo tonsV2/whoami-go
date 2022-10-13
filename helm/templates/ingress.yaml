@@ -17,6 +17,9 @@ metadata:
     ingress.kubernetes.io/ssl-redirect: "true"
   {{- end }}
 spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
   {{- if $tls }}
   tls:
     - secretName: {{ .Values.ingress.hostname | replace "." "-" }}-tls
