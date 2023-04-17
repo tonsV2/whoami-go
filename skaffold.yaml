@@ -1,0 +1,17 @@
+apiVersion: skaffold/v4beta2
+kind: Config
+build:
+  artifacts:
+    - image: tons/whoami-go
+  tagPolicy:
+    inputDigest: { }
+deploy:
+  helm:
+    releases:
+      - name: whoami-go
+        namespace: whoami
+        createNamespace: true
+        chartPath: helm
+        setValueTemplates:
+          repository:
+            image: tons/whoami-go
